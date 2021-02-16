@@ -4,7 +4,7 @@ import Navbar from "./components/Navbar";
 import Today from "./components/Today";
 
 const api = {
-  key: "a7e82dc7837b2f2d9a971d597eec152f",
+  key: process.env.REACT_APP_API_KEY,
   base: "https://api.openweathermap.org/data/2.5/",
 };
 
@@ -24,11 +24,23 @@ function App() {
     }
   };
 
+  function isItRaining() {
+    if (typeof weather == undefined){
+      return "app";
+    }
+    else {
+      if (weather.weather == undefined)
+        return "app";
+      else {
+        if (weather.weather[0].main === "Rain")
+          return "app rain";
+      }
+    }
+    return "app";
+  }
+
   return (
-      <div className={(typeof weather.main != undefined)? 
-        ((weather.weather[0].main === "Rain")? "app rain" : "app")
-        : "app"}
-      >
+      <div className={isItRaining()}>
         <div className="wrapper">
           <Navbar search={search} query={query} setQuery={setQuery}/>
           { typeof weather.main != "undefined" ? (
